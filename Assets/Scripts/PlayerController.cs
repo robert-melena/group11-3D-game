@@ -8,6 +8,18 @@ public class PlayerController : MonoBehaviour
     
     public float speed = 5.0f;
     public float rotateSpeed = 100.0f;
+    public float jumpHeight = 1f;
+
+    public float gravity = -9.81f;
+
+    public Transform groundCheck;
+    public float groundDistance = 0.4f;
+    public LayerMask groundMask;
+    public LayerMask acidMask;
+
+    Vector3 velocity;
+    bool isGrounded;
+    bool isOnAcid;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -18,38 +30,31 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        var keyboard = Keyboard.current;
-        if (keyboard.wKey.isPressed)
+        isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
+        isOnAcid = Physics.CheckSphere(groundCheck.position, groundDistance, acidMask);
+
+        if (isGrounded && velocity.y < 0)
         {
-            Vector3 movement = new Vector3(0.0f, 0.0f, 1.0f * Time.deltaTime * speed);
-            movement = transform.TransformDirection(movement);
-            controller.Move(movement);
+            velocity.y = -2f;
         }
-        if (keyboard.sKey.isPressed)
+
+        float x = Input.GetAxis("Horizontal");
+        float z = Input.GetAxis("Vertical");
+
+        Vector3 move = transform.right * x + transform.forward * z;
+
+        controller.Move(move * speed * Time.deltaTime);
+
+        if (Input.GetButtonDown("Jump") && isGrounded)
         {
-            Vector3 movement = new Vector3(0.0f, 0.0f, -1.0f * Time.deltaTime * speed);
-            movement = transform.TransformDirection(movement);
-            controller.Move(movement);
+            velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
         }
-        if (keyboard.aKey.isPressed)
+        if (isOnAcid)
         {
-            Vector3 movement = new Vector3(-1.0f * Time.deltaTime * speed, 0.0f, 0.0f);
-            movement = transform.TransformDirection(movement);
-            controller.Move(movement);
-            //Vector3 rotation = new Vector3(0.0f, -1.0f * Time.deltaTime * rotateSpeed, 0.0f);
-            //transform.Rotate(rotation);
+            velocity.y = Mathf.Sqrt(jumpHeight * -4f * gravity);
         }
-        if (keyboard.dKey.isPressed)
-        {
-            Vector3 movement = new Vector3(1.0f * Time.deltaTime * speed, 0.0f, 0.0f);
-            movement = transform.TransformDirection(movement);
-            controller.Move(movement);
-            //Vector3 rotation = new Vector3(0.0f, 1.0f * Time.deltaTime * rotateSpeed, 0.0f);
-            //transform.Rotate(rotation);
-        }
-        if (keyboard.escapeKey.wasPressedThisFrame)
-        {
-            Application.Quit();
-        }
+
+        velocity.y += gravity * Time.deltaTime;
+        controller.Move(velocity * Time.deltaTime);
     }
 }
