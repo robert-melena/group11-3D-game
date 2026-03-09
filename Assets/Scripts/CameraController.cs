@@ -1,5 +1,7 @@
 using UnityEngine;
 
+// Should probably delete this script
+
 public class CameraController : MonoBehaviour
 {
 
