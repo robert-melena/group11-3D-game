@@ -2733,6 +2733,7 @@ GameObject:
   - component: {fileID: 1463827357}
   - component: {fileID: 1463827356}
   - component: {fileID: 1463827359}
+  - component: {fileID: 1463827360}
   m_Layer: 9
   m_Name: Enemy
   m_TagString: Enemy
@@ -2763,7 +2764,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 2.5
+  m_Speed: 4
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -2808,9 +2809,30 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 5, y: 1, z: 5}
+  m_Center: {x: 0, y: 1, z: 0}
+--- !u!65 &1463827360
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1463827355}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2, y: 1, z: 2.4}
   m_Center: {x: 0, y: 1, z: 0}
 --- !u!1 &1466082210
 GameObject:
