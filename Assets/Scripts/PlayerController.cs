@@ -19,10 +19,12 @@ public class PlayerController : MonoBehaviour
     public float groundDistance = 0.4f;
     public LayerMask groundMask;
     public LayerMask acidMask;
+    public LayerMask jumpPadMask;
     public LayerMask enemyMask;
 
     Vector3 velocity;
     public bool isGrounded;
+    public bool isOnJumpPad;
     public bool isOnAcid;
     public bool contactEnemy;
     public float acidCooldown = 1f; //1 second
@@ -52,6 +54,7 @@ public class PlayerController : MonoBehaviour
         
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
         isOnAcid = Physics.CheckSphere(groundCheck.position, groundDistance, acidMask);
+        isOnJumpPad = Physics.CheckSphere(groundCheck.position, groundDistance, jumpPadMask);
 
         if (knockbackTimer <= 0f)
         {
@@ -69,6 +72,10 @@ public class PlayerController : MonoBehaviour
                 playerHealth.TakeDamage(10f);
                 velocity.y = Mathf.Sqrt(jumpHeight * -5f * gravity);
                 lastAcid = Time.time;
+            }
+            if (isOnJumpPad)
+            {
+                velocity.y = Mathf.Sqrt(jumpHeight * -5f * gravity);
             }
 
             if (direction.magnitude >= 0.1f)
